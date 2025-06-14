@@ -24,7 +24,6 @@
             <td>{{ r['aciklama'] or '' }}</td>
             <td>
                 <form method="post" action="{{ url_for('randevu_sil', randevu_id=r['id']) }}" onsubmit="return confirm('Randevuyu silmek istediğinize emin misiniz?');">
-                    {{ csrf_token() }}  <!-- CSRF koruması eklendi -->
                     <button type="submit" class="btn-sil">Sil</button>
                 </form>
             </td>
