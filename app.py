@@ -131,41 +131,59 @@ def get_saat_durumlari(psikolog_id, tarih):
 
 @app.route("/randevu_al/<int:psikolog_id>", methods=["GET", "POST"])
 def randevu_al(psikolog_id):
-    if "user_id" not in session or session.get("rol") != "kullanici":
-        flash("Randevu alabilmek için giriş yapmanız ve kullanıcı olmanız gerekir.", "error")
+    if not session.get("user_id"):
+        flash("Randevu alabilmek için giriş yapmalısınız.", "error")
         return redirect(url_for("login"))
 
     current_date = datetime.now().strftime("%Y-%m-%d")
-    saatler = get_saat_durumlari(psikolog_id, current_date)
 
     if request.method == "POST":
-        tarih = request.form["tarih"]
-        saat = request.form["saat"]
+        tarih = request.form.get("tarih")
+        saat = request.form.get("saat")
+
+        if not tarih or not saat:
+            flash("Lütfen tarih ve saat seçiniz.", "error")
+            return redirect(request.url)
+
         try:
             secilen = parser.parse(f"{tarih} {saat}")
             if secilen < datetime.now():
+                flash("Geçmiş bir tarih seçilemez.", "error")
                 raise ValueError("Geçmiş tarih")
-            if saat not in [s['saat'] for s in get_saat_durumlari(psikolog_id, tarih) if s['durum'] == 'bos']:
-                raise ValueError("Seçilen saat meşgul")
-        except Exception:
-            flash("Geçersiz tarih veya saat.", "error")
+
+            # Mevcut saat durumlarını al
+            saatler = get_saat_durumlari(psikolog_id, tarih)
+            bos_saatler = [s['saat'] for s in saatler if s['durum'] == 'bos']
+
+            if saat not in bos_saatler:
+                flash("Seçilen saat zaten dolu.", "error")
+                raise ValueError("Saat meşgul")
+
+            # Randevu kaydını veritabanına ekle
+            conn = get_db_connection()
+            conn.execute(
+                "INSERT INTO randevular (kullanici_id, psikolog_id, tarih, saat) VALUES (?, ?, ?, ?)",
+                (session["user_id"], psikolog_id, tarih, saat)
+            )
+            conn.commit()
+            conn.close()
+
+            flash("Randevunuz başarıyla oluşturuldu.", "success")
+            return redirect(url_for("randevularim"))
+
+        except Exception as e:
+            print("Randevu oluşturma hatası:", e)
+
+            # Tekrar saat bilgilerini al ve sayfaya geri dön
             saatler = get_saat_durumlari(psikolog_id, tarih)
             saatler_durum = {s['saat']: s['durum'] for s in saatler}
             return render_template("randevu_al.html", current_date=current_date, saatler_durum=saatler_durum, selected_date=tarih)
 
-        conn = get_db_connection()
-        conn.execute(
-            "INSERT INTO randevular (kullanici_id, psikolog_id, tarih, saat, aciklama) VALUES (?, ?, ?, ?, '')",
-            (session["user_id"], psikolog_id, tarih, saat)
-        )
-        conn.commit()
-        conn.close()
-
-        flash("Randevu başarıyla alındı.", "success")
-        return redirect(url_for("randevularim"))
-
+    # GET methodu
+    saatler = get_saat_durumlari(psikolog_id, current_date)
     saatler_durum = {s['saat']: s['durum'] for s in saatler}
     return render_template("randevu_al.html", current_date=current_date, saatler_durum=saatler_durum, selected_date=current_date)
+
 
 
 @app.route("/randevularim")
