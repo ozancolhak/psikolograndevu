@@ -7,23 +7,35 @@ from dateutil import parser
 from datetime import datetime
 import sqlite3
 
-app = Flask(__name__)  # Uygulama nesnesi oluşturuldu
-app.secret_key = "supersecretkey"  # Gizli anahtar ayarlandı
+app = Flask(__name__)
+app.secret_key = "supersecretkey"
 
-# CSRF koruması başlatıldı
+# CSRF koruması
 csrf = CSRFProtect(app)
 
 # Güvenli çerez ayarları
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True, HTTP ise False
+    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True
     SESSION_COOKIE_SAMESITE="Lax"
 )
+
+# Rate limiting
 limiter = Limiter(
-    app=app,
+    app,
     key_func=get_remote_address,
     default_limits=[]
 )
+
+# Güvenlik headerları
+@app.after_request
+def set_security_headers(response):
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'  # Clickjacking koruması
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'  # HSTS
+    response.headers['X-Content-Type-Options'] = 'nosniff'  # MIME tipi koruması
+    # İstersen CSP ekleyebilirsin
+    # response.headers['Content-Security-Policy'] = "default-src 'self';"
+    return response
 
 
 def get_db_connection():
@@ -95,11 +107,7 @@ def logout():
     return redirect(url_for("login"))
 
 def get_saat_durumlari(psikolog_id, tarih):
-    """
-    Verilen psikolog ve tarihe göre saatlerin doluluk durumunu döner.
-    Dönen liste [{'saat': '10', 'durum': 'bos'}, {'saat': '11', 'durum': 'mesgul'}, ...]
-    """
-    saatler = [f"{h:02d}" for h in range(10, 21)]  # 10'dan 20'ye saatler
+    saatler = [f"{h:02d}" for h in range(10, 21)]
 
     conn = get_db_connection()
     randevular = conn.execute(
@@ -240,7 +248,7 @@ def admin_panel():
     conn.close()
     return render_template("admin_panel.html", psikologlar=psikologlar, danisanlar=danisanlar)
 
-@app.route("/psikolog_sil/<int:id>")
+@app.route("/psikolog_sil/<int:id>", methods=["POST"])
 def psikolog_sil(id):
     if "user_id" not in session or session.get("rol") != "admin":
         flash("Admin olarak giriş yapmalısınız.", "error")
