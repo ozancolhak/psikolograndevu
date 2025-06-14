@@ -1,4 +1,5 @@
-
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session, flash
@@ -18,6 +19,12 @@ app.config.update(
     SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True, HTTP ise False
     SESSION_COOKIE_SAMESITE="Lax"
 )
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=[]
+)
+
 
 def get_db_connection():
     conn = sqlite3.connect("veritabani.db")
@@ -54,6 +61,7 @@ def register():
     return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
+@limiter.limit("3 per minute")
 def login():
     if request.method == "POST":
         email = request.form["email"]
@@ -78,6 +86,7 @@ def login():
             flash("Email veya parola hatalı.", "error")
 
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():
