@@ -1,7 +1,5 @@
-from flask_wtf.csrf import generate_csrf
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from dateutil import parser
@@ -11,13 +9,10 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-# CSRF koruması
-csrf = CSRFProtect(app)
-
 # Güvenli çerez ayarları
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True
+    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True yap
     SESSION_COOKIE_SAMESITE="Lax"
 )
 
@@ -74,8 +69,7 @@ def register():
         conn.close()
         return redirect(url_for("login"))
 
-    csrf_token = generate_csrf()
-    return render_template("register.html", csrf_token=csrf_token)
+    return render_template("register.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -103,9 +97,7 @@ def login():
         else:
             flash("Email veya parola hatalı.", "error")
 
-    csrf_token = generate_csrf()
-    return render_template("login.html", csrf_token=csrf_token)
-
+    return render_template("login.html")
 
 
 @app.route("/logout")
@@ -113,6 +105,7 @@ def logout():
     session.clear()
     flash("Başarıyla çıkış yapıldı.", "success")
     return redirect(url_for("login"))
+
 
 def get_saat_durumlari(psikolog_id, tarih):
     saatler = [f"{h:02d}" for h in range(10, 21)]
