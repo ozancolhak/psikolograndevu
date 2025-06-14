@@ -22,7 +22,7 @@ app.config.update(
 
 # Rate limiting
 limiter = Limiter(
-    app=app,
+    app,
     key_func=get_remote_address,
     default_limits=[]
 )
@@ -43,12 +43,14 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 @app.route("/")
 def index():
     conn = get_db_connection()
     psikologlar = conn.execute("SELECT * FROM users WHERE rol = 'psikolog'").fetchall()
     conn.close()
     return render_template("index.html", psikologlar=psikologlar)
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -70,7 +72,10 @@ def register():
             flash("Kayıt başarılı, lütfen giriş yapın.", "success")
         conn.close()
         return redirect(url_for("login"))
-    return render_template("register.html")
+
+    csrf_token = generate_csrf()
+    return render_template("register.html", csrf_token=csrf_token)
+
 
 @app.route("/login", methods=["GET", "POST"])
 @limiter.limit("3 per minute")
@@ -97,7 +102,9 @@ def login():
         else:
             flash("Email veya parola hatalı.", "error")
 
-    return render_template("login.html")
+    csrf_token = generate_csrf()
+    return render_template("login.html", csrf_token=csrf_token)
+
 
 
 @app.route("/logout")
