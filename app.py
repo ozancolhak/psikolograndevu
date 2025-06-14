@@ -20,7 +20,7 @@ app.config.update(
     SESSION_COOKIE_SAMESITE="Lax"
 )
 limiter = Limiter(
-    app,
+    app=app,
     key_func=get_remote_address,
     default_limits=[]
 )
