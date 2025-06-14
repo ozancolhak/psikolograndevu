@@ -99,6 +99,7 @@ def login():
                 return redirect(url_for("admin_panel"))
         else:
             flash("Email veya parola hatalı.", "error")
+            return redirect(url_for("login"))
 
     return render_template("login.html")
 
