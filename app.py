@@ -22,7 +22,7 @@ app.config.update(
 
 # Rate limiting
 limiter = Limiter(
-    app,
+    app=app,
     key_func=get_remote_address,
     default_limits=[]
 )
