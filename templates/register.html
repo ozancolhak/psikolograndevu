@@ -4,36 +4,35 @@
 <h2>Kayıt Ol</h2>
 
 <form method="post" class="form-login">
-  {{ csrf_token() }}  <!-- 🛡️ CSRF koruma token'ı -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
-  <!-- İsim -->
-  <div class="form-group">
-    <label for="ad">Adınız</label>
-    <input type="text" id="ad" name="ad" placeholder="Adınız" required />
-  </div>
+    <div class="form-group">
+        <label for="ad">Adınız</label>
+        <input id="ad" type="text" name="ad" placeholder="Adınız" required>
+    </div>
 
-  <!-- Email -->
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" placeholder="Email" required />
-  </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" placeholder="Email" required>
+    </div>
 
-  <!-- Parola -->
-  <div class="form-group">
-    <label for="parola">Parola</label>
-    <input type="password" id="parola" name="parola" placeholder="Parola" required />
-  </div>
+    <div class="form-group">
+        <label for="parola">Parola</label>
+        <input id="parola" type="password" name="parola" placeholder="Parola" required>
+    </div>
 
-  <!-- Rol sabit: danışan -->
-  <input type="hidden" name="rol" value="kullanici" />
+    <input type="hidden" name="rol" value="kullanici">
 
-  <!-- Submit -->
-  <div class="form-group">
     <button type="submit">Kayıt Ol</button>
-  </div>
 </form>
 
-<p>
-  Zaten hesabınız var mı? <a href="{{ url_for('login') }}">Giriş yapın</a>
-</p>
+<p>Zaten hesabınız var mı? <a href="{{ url_for('login') }}">Giriş yapın</a></p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 {% endblock %}
