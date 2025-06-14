@@ -9,10 +9,12 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
+
+
 # Güvenli çerez ayarları
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True yap
+    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True
     SESSION_COOKIE_SAMESITE="Lax"
 )
 
@@ -72,6 +74,7 @@ def register():
     return render_template("register.html")
 
 
+
 @app.route("/login", methods=["GET", "POST"])
 @limiter.limit("3 per minute")
 def login():
@@ -100,12 +103,12 @@ def login():
     return render_template("login.html")
 
 
+
 @app.route("/logout")
 def logout():
     session.clear()
     flash("Başarıyla çıkış yapıldı.", "success")
     return redirect(url_for("login"))
-
 
 def get_saat_durumlari(psikolog_id, tarih):
     saatler = [f"{h:02d}" for h in range(10, 21)]
