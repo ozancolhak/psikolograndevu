@@ -4,18 +4,17 @@
 <h2>Randevu Al</h2>
 
 <form method="post" class="form-randevu" onsubmit="return validateDateTime()">
-    {{ csrf_token() }}  <!-- Buraya ekledik -->
 
     <div class="form-group">
         <label for="tarih">Tarih</label>
-        <input type="date" id="tarih" name="tarih" required min="{{ current_date }}" value="{{ current_date }}" />
+        <input type="date" id="tarih" name="tarih" required min="{{ current_date }}" value="{{ selected_date or current_date }}" />
     </div>
 
     <div class="form-group">
         <label for="saat">Saat</label>
         <select id="saat" name="saat" required>
             {% for saat, durum in saatler_durum.items() %}
-                <option value="{{ saat }}" class="saat-{{ durum }}">{{ saat }}:00</option>
+                <option value="{{ saat }}" class="saat-{{ durum }}">{{ saat }}:00 {% if durum == 'bos' %}(Boş){% else %}(Meşgul){% endif %}</option>
             {% endfor %}
         </select>
     </div>
@@ -25,13 +24,14 @@
 
 <div class="randevu-saatler-alt">
     <div class="randevu-saatler-baslik">
-        {{ selected_date }} Tarihi İçin Tüm Saatler
+        {{ selected_date or current_date }} Tarihi İçin Tüm Saatler
     </div>
 
     <div class="saatler-container">
         {% for saat, durum in saatler_durum.items() %}
-            <div class="saat-kutusu saat-{{ durum }}" onclick="selectSaat('{{ saat }}')">
-                {{ saat }}:00 {{ durum == 'bos' and 'Boş' or 'Meşgul' }}
+            <div class="saat-kutusu saat-{{ durum }}{% if durum == 'bos' %} clickable{% endif %}" 
+                 onclick="selectSaat('{{ saat }}')">
+                {{ saat }}:00 {% if durum == 'bos' %}Boş{% else %}Meşgul{% endif %}
             </div>
         {% endfor %}
     </div>
@@ -55,7 +55,14 @@ function validateDateTime() {
 }
 
 function selectSaat(saat) {
-    document.getElementById("saat").value = saat;
+    const saatSelect = document.getElementById("saat");
+    const options = saatSelect.options;
+    for (let i = 0; i < options.length; i++) {
+        if (options[i].value === saat) {
+            saatSelect.selectedIndex = i;
+            break;
+        }
+    }
 }
 
 window.onload = function () {
