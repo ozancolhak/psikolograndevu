@@ -4,15 +4,28 @@
 <h2>Giriş Yap</h2>
 
 <form method="post" class="form-login">
-    {{ csrf_token() }}  <!-- CSRF koruması -->
-    <input type="email" name="email" placeholder="Email" required autocomplete="email" />
-    <input type="password" name="parola" placeholder="Parola" required autocomplete="current-password" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" placeholder="Email" required autocomplete="email">
+    </div>
+
+    <div class="form-group">
+        <label for="parola">Parola</label>
+        <input id="parola" type="password" name="parola" placeholder="Parola" required autocomplete="current-password">
+    </div>
+
     <button type="submit">Giriş</button>
 </form>
 
 <p>Hesabınız yok mu? <a href="{{ url_for('register') }}">Kayıt olun</a></p>
 
-{% if error %}
-<div class="flash flash-error">{{ error }}</div>
-{% endif %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 {% endblock %}
