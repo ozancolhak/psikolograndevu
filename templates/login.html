@@ -4,7 +4,6 @@
 <h2>Giriş Yap</h2>
 
 <form method="post" class="form-login">
-
     <div class="form-group">
         <label for="email">Email</label>
         <input id="email" type="email" name="email" placeholder="Email" required autocomplete="email" autofocus>
@@ -19,12 +18,4 @@
 </form>
 
 <p>Hesabınız yok mu? <a href="{{ url_for('register') }}">Kayıt olun</a></p>
-
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="flash flash-{{ category }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
 {% endblock %}
