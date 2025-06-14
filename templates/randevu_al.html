@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Randevu Al</h2>
+
+<form method="post" class="form-randevu" onsubmit="return validateDateTime()">
+    <div class="form-group">
+        <label for="tarih">Tarih</label>
+        <input type="date" id="tarih" name="tarih" required min="{{ current_date }}" value="{{ current_date }}" />
+    </div>
+
+    <div class="form-group">
+        <label for="saat">Saat</label>
+        <select id="saat" name="saat" required>
+            {% for saat, durum in saatler_durum.items() %}
+                <option value="{{ saat }}" class="saat-{{ durum }}">{{ saat }}:00</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit">Randevu Al</button>
+</form>
+
+<div class="randevu-saatler-alt">
+    <div class="randevu-saatler-baslik">
+        {{ selected_date }} Tarihi İçin Tüm Saatler
+    </div>
+
+    <div class="saatler-container">
+        {% for saat, durum in saatler_durum.items() %}
+            <div class="saat-kutusu saat-{{ durum }}" onclick="selectSaat('{{ saat }}')">
+                {{ saat }}:00 {{ durum == 'bos' and 'Boş' or 'Meşgul' }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function validateDateTime() {
+    const tarih = document.getElementById('tarih').value;
+    const saat = document.getElementById('saat').value;
+    if (!tarih || !saat) {
+        alert('Tarih ve saat zorunludur.');
+        return false;
+    }
+    const selectedDateTime = new Date(tarih + 'T' + saat + ':00');
+    const now = new Date();
+    if (selectedDateTime <= now) {
+        alert('Geçmiş tarih veya saat seçilemez.');
+        return false;
+    }
+    return true;
+}
+
+function selectSaat(saat) {
+    document.getElementById("saat").value = saat;
+}
+
+window.onload = function () {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('tarih').setAttribute('min', today);
+};
+</script>
+{% endblock %}

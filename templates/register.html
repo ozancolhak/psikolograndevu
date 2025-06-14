@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Kayıt Ol</h2>
+
+<form method="post" class="form-login">
+  <!-- İsim -->
+  <div class="form-group">
+    <label for="ad">Adınız</label>
+    <input type="text" id="ad" name="ad" placeholder="Adınız" required />
+  </div>
+
+  <!-- Email -->
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Email" required />
+  </div>
+
+  <!-- Parola -->
+  <div class="form-group">
+    <label for="parola">Parola</label>
+    <input type="password" id="parola" name="parola" placeholder="Parola" required />
+  </div>
+
+  <!-- Rol sabit: danışan -->
+  <input type="hidden" name="rol" value="kullanici" />
+
+  <!-- Submit -->
+  <div class="form-group">
+    <button type="submit">Kayıt Ol</button>
+  </div>
+</form>
+
+<p>
+  Zaten hesabınız var mı? <a href="{{ url_for('login') }}">Giriş yapın</a>
+</p>
+{% endblock %}

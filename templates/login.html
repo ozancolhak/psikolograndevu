@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Giriş Yap</h2>
+
+<form method="post" class="form-login">
+    <input type="email" name="email" placeholder="Email" required autocomplete="email" />
+    <input type="password" name="parola" placeholder="Parola" required autocomplete="current-password" />
+    <button type="submit">Giriş</button>
+</form>
+
+<p>Hesabınız yok mu? <a href="{{ url_for('register') }}">Kayıt olun</a></p>
+
+{% if error %}
+<div class="flash flash-error">{{ error }}</div>
+{% endif %}
+{% endblock %}

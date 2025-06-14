@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Psikolog Randevu Sistemi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <a href="{{ url_for('index') }}" class="logo">Psikolog Randevu Sistemi</a>
+            <nav>
+                {% if session.get('user_id') %}
+                    <span class="welcome-text">Hoşgeldiniz, {{ session.get('user_ad', 'Kullanıcı') }}!</span>
+                    {% if session.get('rol') == 'kullanici' %}
+                        <a href="{{ url_for('randevularim') }}">Randevularım</a>
+                    {% elif session.get('rol') == 'psikolog' %}
+                        <a href="{{ url_for('psikolog_panel') }}">Panel</a>
+                    {% elif session.get('rol') == 'admin' %}
+                        <a href="{{ url_for('admin_panel') }}">Admin Paneli</a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" class="btn-logout">Çıkış</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Giriş</a>
+                    <a href="{{ url_for('register') }}">Kayıt</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- İsteğe bağlı footer -->
+    </footer>
+</body>
+</html>

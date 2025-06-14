@@ -1,0 +1,427 @@
+/*/* Genel Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ede9e3;
+    color: #3e3e3e;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+}
+.form-login,
+.psikolog-kart,
+.form-randevu {
+    background-color: #f9f7f4; /* header ile aynıya çok yakın, hafif fark var */
+}
+
+main.container {
+    background-color: #ede9e3; /* direkt header renginde */
+    padding: 40px 20px;
+}
+
+/* Konteyner */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    background-color: #d3c7bb; /* Koyu kahverengi */
+    color: white;
+    padding: 20px 0;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #3e3e3e;
+}
+
+nav a {
+    color: #3e3e3e;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: #6b4f3b;
+}
+
+.welcome-text {
+    margin-right: 10px;
+    font-weight: 500;
+    color:#3e3e3e;
+}
+
+/* Ana içerik */
+main.container {
+    padding: 40px 20px;
+}
+
+/* Giriş / Kayıt Formları */
+.form-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.form-login input,
+.form-login select {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #d6cec2;
+    border-radius: 8px;
+    background-color: #faf9f7;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-login input:focus,
+.form-login select:focus {
+    outline: none;
+    border-color: #c1a78f;
+    box-shadow: 0 0 5px rgba(193, 167, 143, 0.5);
+}
+
+.form-login button {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #a9825a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-login button:hover {
+    background-color: #8c6b48;
+}
+
+/* Psikolog Kartları */
+.psikolog-listesi {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.psikolog-kart {
+    background-color: white;
+    border: 1px solid #e7e1da;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.psikolog-kart h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #3e3e3e;
+}
+
+.psikolog-kart p {
+    font-size: 14px;
+    color: #756b60;
+}
+
+.btn-randevu {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 16px;
+    background-color: #5a9f74;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-randevu:hover {
+    background-color: #467a5a;
+}
+
+/* Randevu Tablosu */
+.table-randevular {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.table-randevular th,
+.table-randevular td {
+    padding: 12px;
+    border: 1px solid #e7e1da;
+    text-align: left;
+    font-size: 14px;
+}
+
+.table-randevular th {
+    background-color: #f1ece7;
+    color: #5c5044;
+}
+
+/* Buton - Sil */
+.btn-sil {
+    background-color: #d66a6a;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-sil:hover {
+    background-color: #b94747;
+}
+
+/* Flash mesajlar */
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+.flash {
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.flash-success {
+    background-color: #e6f4ea;
+    color: #2d5540;
+}
+
+.flash-error {
+    background-color: #fce8e8;
+    color: #822727;
+}
+
+.flash-info {
+    background-color: #f2f4f6;
+    color: #475569;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    color: #7c6f61;
+}
+
+/* H2 Başlıklar */
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #5c5044;
+}
+
+/* Ortadaki boş blokları gizle */
+main.container > div:not(.form-login):empty {
+    display: none;
+}
+
+/* Randevu Formu */
+.form-randevu {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 800;
+    font-size:20px;
+    margin-bottom: 12px;
+    color: #3e3e3e;
+}
+
+.form-randevu input[type="date"],
+.form-randevu select {
+    padding: 22px;
+    border: 1px solid #d6cec2;
+    border-radius: 8px;
+    font-size: 22px;
+    background-color: #faf9f7;
+    color: #3e3e3e;
+    box-sizing: border-box;
+}
+
+.form-randevu button {
+    padding: 22px;
+    font-size: 22px;
+    background-color: #a9825a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.form-randevu button:hover {
+    background-color: #8c6b48;
+}
+.form-login {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #f9f7f4;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.form-login input {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #d6cec2;
+    border-radius: 8px;
+    background-color: #faf9f7;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-login input:focus {
+    outline: none;
+    border-color: #c1a78f;
+    box-shadow: 0 0 5px rgba(193, 167, 143, 0.5);
+}
+
+.form-login button {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #a9825a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-login button:hover {
+    background-color: #8c6b48;
+}
+
+/* Tablo stili zaten varmış senin CSS'te ama gerekirse: */
+.table-randevular {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-randevular th,
+.table-randevular td {
+    padding: 12px;
+    border: 1px solid #e7e1da;
+    text-align: left;
+    font-size: 14px;
+}
+
+.table-randevular th {
+    background-color: #f1ece7;
+    color: #5c5044;
+}
+
+/* Sil butonu */
+.btn-sil {
+    background-color: #d66a6a;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-sil:hover {
+    background-color: #b94747;
+}
+.randevu-saatler-baslik {
+    font-size: 24px;           /* Yazı büyüklüğü */
+    font-weight: 700;
+    margin: 40px 0 20px 0;     /* Üst ve alt boşluk */
+    color: #5c5044;
+    text-align: center;
+}
+
+/* Saat kutularını büyüt, aralarını biraz aç, aşağı kaydır */
+.saatler-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;                 /* Saatler arası boşluk */
+    justify-content: center;   /* Ortala */
+    margin-bottom: 50px;       /* Alt boşluk - form ile arası */
+}
+
+.saat-kutusu {
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 18px 25px;        /* Daha büyük kutu */
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: default;
+    user-select: none;
+    min-width: 130px;          /* Genişlik büyüdü */
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 18px;           /* Yazı büyüklüğü */
+}
+
+.saat-kutusu:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* Boş saatler yeşil */
+.saat-bos {
+    background-color: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+/* Meşgul saatler kırmızı */
+.saat-meşgul {
+    background-color: #e74c3c;  /* Daha koyu kırmızı */
+    color: white;               /* Beyaz yazı */
+    border: 2px solid #c0392b;  /* Kontrast sınır */
+}
+.saat-bos {
+    background-color: #d4f8dd;  /* yeşilimsi */
+    color: #1a3e2f;
+}
+
+.saat-mesgul {
+    background-color: #f8d7da;  /* kırmızımsı */
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}

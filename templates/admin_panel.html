@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<main class="container">
+  <h2>Admin Paneli - Psikolog Ekle</h2>
+
+
+
+<form method="post" class="form-login">
+  <input type="text" name="ad" placeholder="Ad" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="password" name="parola" placeholder="Parola" required />
+  
+  <div class="form-group">
+    <label for="uzmanlik">Uzmanlık Seçin</label>
+    <select id="uzmanlik" name="uzmanlik" required>
+      <option value="" disabled selected>Uzmanlık Seçin</option>
+      <option value="Aile Terapisi">Aile Terapisi</option>
+      <option value="Çocuk Psikolojisi">Çocuk Psikolojisi</option>
+      <option value="Bağımlılık">Bağımlılık</option>
+      <option value="Depresyon">Depresyon</option>
+      <option value="Travma">Travma</option>
+      <option value="Diğer">Diğer</option>
+    </select>
+  </div>
+
+  <button type="submit">Psikolog Ekle</button>
+</form>
+
+
+  <h3 style="margin-top: 40px;">Mevcut Psikologlar</h3>
+  {% if psikologlar|length == 0 %}
+    <p>Henüz psikolog bulunmamaktadır.</p>
+  {% else %}
+    <table class="table-randevular">
+      <thead>
+        <tr>
+          <th>Ad</th>
+          <th>Email</th>
+          <th>Uzmanlık</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in psikologlar %}
+          <tr>
+            <td>{{ p['ad'] }}</td>
+            <td>{{ p['email'] }}</td>
+            <td>{{ p['uzmanlik'] or '-' }}</td>
+            <td>
+              <a href="{{ url_for('psikolog_sil', id=p['id']) }}"
+                 onclick="return confirm('Psikolog silinecek. Emin misiniz?');"
+                 class="btn-sil">Sil</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  <h3 style="margin-top: 40px;">Mevcut Danışanlar</h3>
+  {% if danisanlar|length == 0 %}
+    <p>Henüz danışan bulunmamaktadır.</p>
+  {% else %}
+    <table class="table-randevular">
+      <thead>
+        <tr>
+          <th>Ad</th>
+          <th>Email</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in danisanlar %}
+          <tr>
+            <td>{{ d['ad'] }}</td>
+            <td>{{ d['email'] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</main>
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Randevularım</h2>
+{% if randevular|length == 0 %}
+<p>Henüz randevunuz yok.</p>
+{% else %}
+<table class="table-randevular">
+    <thead>
+        <tr>
+            <th>Psikolog</th>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in randevular %}
+        <tr>
+            <td>{{ r['psikolog_ad'] }}</td>
+            <td>{{ r['tarih'] }}</td>
+            <td>{{ r['saat'] }}</td>
+            <td>
+                <form method="post" action="{{ url_for('randevu_sil', randevu_id=r['id']) }}" onsubmit="return confirm('Randevuyu silmek istediğinize emin misiniz?');">
+                    <button type="submit" class="btn-sil">Sil</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
