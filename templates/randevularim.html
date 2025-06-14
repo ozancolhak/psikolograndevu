@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block content %}
 <h2>Randevularım</h2>
 {% if randevular|length == 0 %}
@@ -22,6 +21,7 @@
             <td>{{ r['saat'] }}</td>
             <td>
                 <form method="post" action="{{ url_for('randevu_sil', randevu_id=r['id']) }}" onsubmit="return confirm('Randevuyu silmek istediğinize emin misiniz?');">
+                    {{ csrf_token() }}
                     <button type="submit" class="btn-sil">Sil</button>
                 </form>
             </td>

@@ -1,11 +1,23 @@
+
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from dateutil import parser
 from datetime import datetime
 import sqlite3
 
-app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app = Flask(__name__)  # Uygulama nesnesi oluşturuldu
+app.secret_key = "supersecretkey"  # Gizli anahtar ayarlandı
+
+# CSRF koruması başlatıldı
+csrf = CSRFProtect(app)
+
+# Güvenli çerez ayarları
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True,  # HTTPS kullanıyorsan True, HTTP ise False
+    SESSION_COOKIE_SAMESITE="Lax"
+)
 
 def get_db_connection():
     conn = sqlite3.connect("veritabani.db")

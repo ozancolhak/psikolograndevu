@@ -4,6 +4,8 @@
 <h2>Randevu Al</h2>
 
 <form method="post" class="form-randevu" onsubmit="return validateDateTime()">
+    {{ csrf_token() }}  <!-- Buraya ekledik -->
+
     <div class="form-group">
         <label for="tarih">Tarih</label>
         <input type="date" id="tarih" name="tarih" required min="{{ current_date }}" value="{{ current_date }}" />
