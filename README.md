@@ -21,3 +21,17 @@ Bu proje, danışanların psikologlardan kolayca randevu alabilmesini sağlayan 
 - Zaman kontrolü (geçmişe randevu engeli)
 - Kullanıcı doğrulama sistemi
 
+## 🛠 Kurulum
+
+1. Gerekli paketleri yükleyin:
+
+-bash
+pip install -r requirements.txt
+
+-bash
+python init_db.py
+#Veritabanını başlatın:
+
+-bash
+python app.py
+#Uygulamayı başlatın:
